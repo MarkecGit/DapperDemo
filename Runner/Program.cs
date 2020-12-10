@@ -13,9 +13,10 @@ namespace Runner
         {
             Initialize();
 
-            //Get_all_should_return_6_results();
+           
+            Get_all_should_return_6_results();
             var id = Insert_should_assign_identity_to_new_entity();
-            
+
             Find_should_retrieve_existing_entity(id);
             Modify_should_update_existing_entity(id);
             Delete_should_remove_entity(id);
@@ -127,8 +128,8 @@ namespace Runner
 
         private static IContactRepository CreateRepository()
         {
-            return new ContactRepository(config.GetConnectionString("DefaultConnection"));
-            //return new ContactRepositoryContrib(config.GetConnectionString("DefaultConnection"));
+            //return new ContactRepository(config.GetConnectionString("DefaultConnection"));
+            return new ContactRepositoryContrib(config.GetConnectionString("DefaultConnection"));
         }
     }
 }

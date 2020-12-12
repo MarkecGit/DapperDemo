@@ -50,20 +50,24 @@ namespace Runner
             IContactRepository repository = CreateRepository();
 
             // act
-            var contact = repository.Find(id);
+            //var contact = repository.Find(id);
+            var contact = repository.GetFullContact(id);
+
             contact.FirstName = "Bob";
-            //contact.Addresses[0].StreetAddress = "456 Main Street";
-            repository.Update(contact);
-            //repository.Save(contact);
+            contact.Addresses[0].StreetAddress = "456 Main Street";
+            //repository.Update(contact);
+            repository.Save(contact);
 
             // create a new repository for verification purposes
             IContactRepository repository2 = CreateRepository();
-            var modifiedContact = repository2.Find(id);
+            //var modifiedContact = repository2.Find(id);
+            var modifiedContact = repository2.GetFullContact(id);
 
             // assert
             Console.WriteLine("*** Contact Modified ***");
             modifiedContact.Output();
             Debug.Assert(modifiedContact.FirstName == "Bob");
+            Debug.Assert(modifiedContact.Addresses.First().StreetAddress == "456 Main Street");
         }
 
         static void Find_should_retrieve_existing_entity(int id)
@@ -96,10 +100,20 @@ namespace Runner
                 Company = "Microsoft",
                 Title = "Developer"
             };
-           
+            var address = new Address
+            {
+                AddressType = "Home",
+                StreetAddress = "123 Main Street",
+                City = "Baltiomre",
+                StateId = 1,
+                PostalCode="22222"
+            };
+            contact.Addresses.Add(address);
 
             // act
-            repository.Add(contact);
+            //repository.Add(contact);
+            repository.Save(contact);
+
 
 
             // assert

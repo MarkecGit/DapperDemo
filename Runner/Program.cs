@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 
 namespace Runner
 {
@@ -13,13 +14,17 @@ namespace Runner
         {
             Initialize();
 
-           
+
             Get_all_should_return_6_results();
             var id = Insert_should_assign_identity_to_new_entity();
 
             Find_should_retrieve_existing_entity(id);
             Modify_should_update_existing_entity(id);
             Delete_should_remove_entity(id);
+
+            //var repository = CreateRepository();
+            //var mj = repository.GetFullContact(1);
+            //mj.Output();
         }
 
         static void Delete_should_remove_entity(int id)
@@ -66,17 +71,17 @@ namespace Runner
             // arrange
             IContactRepository repository = CreateRepository();
 
-            // act
+            // act  
+            var contact = repository.GetFullContact(id);
             //var contact = repository.Find(id);
-            var contact = repository.Find(id);
 
             // assert
             Console.WriteLine("*** Get Contact ***");
             contact.Output();
             Debug.Assert(contact.FirstName == "Joe");
             Debug.Assert(contact.LastName == "Blow");
-            //Debug.Assert(contact.Addresses.Count == 1);
-            //Debug.Assert(contact.Addresses.First().StreetAddress == "123 Main Street");
+            Debug.Assert(contact.Addresses.Count == 1);
+            Debug.Assert(contact.Addresses.First().StreetAddress == "123 Main Street");
         }
 
         static int Insert_should_assign_identity_to_new_entity()
@@ -128,8 +133,8 @@ namespace Runner
 
         private static IContactRepository CreateRepository()
         {
-            //return new ContactRepository(config.GetConnectionString("DefaultConnection"));
-            return new ContactRepositoryContrib(config.GetConnectionString("DefaultConnection"));
+            return new ContactRepository(config.GetConnectionString("DefaultConnection"));
+            //return new ContactRepositoryContrib(config.GetConnectionString("DefaultConnection"));
         }
     }
 }

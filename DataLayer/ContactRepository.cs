@@ -39,7 +39,23 @@ namespace DataLayer
 
         public Contact GetFullContact(int id)
         {
-            throw new System.NotImplementedException();
+            var sql =
+                "SELECT * FROM Contacts WHERE Id = @Id; " +
+                "SELECT * FROM Addresses WHERE ContactId = @Id;";
+
+            using (var multipleResults = db.QueryMultiple(sql, new {Id = id }))
+            {
+                var contact = multipleResults.Read<Contact>().SingleOrDefault();
+
+                var addresses = multipleResults.Read<Address>().ToList();
+
+                if (contact != null && addresses != null)
+                {
+                    contact.Addresses.AddRange(addresses);
+                }
+
+                return contact;
+            }         
         }
 
         public void Remove(int id)

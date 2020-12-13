@@ -16,15 +16,30 @@ namespace Runner
 
 
             //Get_all_should_return_6_results();
-            var id = Insert_should_assign_identity_to_new_entity();
+            //var id = Insert_should_assign_identity_to_new_entity();
 
-            Find_should_retrieve_existing_entity(id);
-            Modify_should_update_existing_entity(id);
-            Delete_should_remove_entity(id);
+            //Find_should_retrieve_existing_entity(id);
+            //Modify_should_update_existing_entity(id);
+            //Delete_should_remove_entity(id);
 
             //var repository = CreateRepository();
             //var mj = repository.GetFullContact(1);
             //mj.Output();
+
+            List_support_should_produce_ccorrect_results();
+        }
+
+        static void List_support_should_produce_ccorrect_results()
+        {
+            //arrange
+            var repository = CreateRepositoryEx();
+
+            //act
+            var contacts = repository.GetContactsById(1, 2, 4);
+
+            //assert
+            Debug.Assert(contacts.Count == 3);
+            contacts.Output();
         }
 
         static void Delete_should_remove_entity(int id)
@@ -151,6 +166,11 @@ namespace Runner
             return new ContactRepositorySP(config.GetConnectionString("DefaultConnection"));
             //return new ContactRepository(config.GetConnectionString("DefaultConnection"));
             //return new ContactRepositoryContrib(config.GetConnectionString("DefaultConnection"));
+        }
+
+        private static ContactRepositoryEx  CreateRepositoryEx()
+        {
+            return new ContactRepositoryEx(config.GetConnectionString("DefaultConnection"));
         }
     }
 }

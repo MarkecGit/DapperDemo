@@ -26,7 +26,22 @@ namespace Runner
             //var mj = repository.GetFullContact(1);
             //mj.Output();
 
-            List_support_should_produce_ccorrect_results();
+            Dynamic_support_should_produce_ccorrect_results();
+        }
+
+        static void Dynamic_support_should_produce_ccorrect_results()
+        {
+            //arrange
+            var repository = CreateRepositoryEx();
+
+            //act
+            var contacts = repository.GetDynamicContactsById(1, 2, 4);
+
+            //assert
+            Debug.Assert(contacts.Count == 3);
+            Console.WriteLine($"First  FirstName is {contacts.First().FirstName}" );
+
+            contacts.Output();
         }
 
         static void List_support_should_produce_ccorrect_results()

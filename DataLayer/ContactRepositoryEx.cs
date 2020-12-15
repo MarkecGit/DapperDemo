@@ -16,6 +16,11 @@ namespace DataLayer
             this.db = new SqlConnection(connString);
         }
 
+        public List<Address> GetAddressesByState(int stateId)
+        {
+            return this.db.Query<Address>("SELECT * FROM Addresses WHERE StateId = {=stateId}", new { stateId}).ToList();          
+        }
+
         public int BulkInsertContacts(List<Contact> contacts)
         {
             var sql =                           

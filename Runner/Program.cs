@@ -28,8 +28,24 @@ namespace Runner
             //mj.Output();
 
             //Dynamic_support_should_produce_ccorrect_results();
-            Bulk_insert_should_insert_4_rows();
+            //Bulk_insert_should_insert_4_rows();
+
+            GetIllinoisAddresses();
         }
+
+        static void GetIllinoisAddresses()
+        {
+            // arrange
+            var repository = CreateRepositoryEx();
+
+            // act
+            var addresses = repository.GetAddressesByState(17);
+
+            //assert
+            Debug.Assert(addresses.Count == 2);
+            addresses.Output();
+        }
+
 
         static void Bulk_insert_should_insert_4_rows()
         {

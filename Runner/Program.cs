@@ -30,7 +30,23 @@ namespace Runner
             //Dynamic_support_should_produce_ccorrect_results();
             //Bulk_insert_should_insert_4_rows();
 
-            GetIllinoisAddresses();
+            //GetIllinoisAddresses();
+
+            Get_all_should_return_6_results_with_addresses();
+        }
+
+        static void Get_all_should_return_6_results_with_addresses()
+        {
+            var repository = CreateRepositoryEx();
+
+            //act
+            var contacts = repository.GetAllContactsWithAddresses();
+
+            //assert
+            Console.WriteLine($"Count : {contacts.Count}");
+            contacts.Output();
+            Debug.Assert(contacts.Count == 6);
+            Debug.Assert(contacts.First().Addresses.Count == 2);
         }
 
         static void GetIllinoisAddresses()

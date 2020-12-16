@@ -16,6 +16,29 @@ namespace DataLayer
             this.db = new SqlConnection(connString);
         }
 
+        public List<Contact> GetAllContactsWithAddresses()
+        {
+            var sql = "SELECT * FROM Contacts AS C INNER JOIN Addresses AS A ON A.ContactID = C.Id";
+
+
+            var contactDict = new Dictionary<int, Contact>();
+
+            var contacts = this.db.Query<Contact, Address,  Contact>(sql, (contact, address ) =>
+            {
+
+                if (!contactDict.TryGetValue(contact.Id, out var currentContact))
+                {
+                    currentContact = contact;
+                    contactDict.Add(currentContact.Id, currentContact);
+                }
+
+                currentContact.Addresses.Add(address);
+                return currentContact;
+            });
+
+            return contacts.Distinct().ToList();                   
+        }
+
         public List<Address> GetAddressesByState(int stateId)
         {
             return this.db.Query<Address>("SELECT * FROM Addresses WHERE StateId = {=stateId}", new { stateId}).ToList();          
